@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon Brasil — Estratégia de Marketplace 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --amz-orange: #FF9900;
+  --amz-dark: #131921;
+  --amz-navy: #0F1923;
+  --amz-mid: #1C2B3A;
+  --amz-card: #1E2D3D;
+  --amz-border: rgba(255,153,0,0.2);
+  --text: #F0EDE6;
+  --muted: #8A9BB0;
+  --green: #2ECC71;
+  --red: #E74C3C;
+  --yellow: #F39C12;
+  --blue: #3498DB;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--amz-dark);
+  color: var(--text);
+  overflow: hidden;
+  height: 100vh;
+  cursor: default;
+}
+
+/* ─── NAV ─── */
+#nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  background: rgba(13,19,26,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--amz-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  z-index: 1000;
+}
+#nav .logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--amz-orange);
+  letter-spacing: 2px;
+}
+#nav .nav-pills {
+  display: flex;
+  gap: 4px;
+}
+#nav .nav-pill {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+  border: none;
+  background: transparent;
+}
+#nav .nav-pill:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+#nav .nav-pill.active { color: var(--amz-dark); background: var(--amz-orange); }
+#nav .progress-info {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* ─── SLIDES CONTAINER ─── */
+#slides {
+  position: fixed;
+  top: 56px; left: 0; right: 0; bottom: 56px;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  opacity: 0;
+  transform: translateX(60px);
+  transition: all .5s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+  overflow-y: auto;
+}
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+.slide.exit-left {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+/* ─── BOTTOM BAR ─── */
+#bottom {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 56px;
+  background: rgba(13,19,26,0.95);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--amz-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  z-index: 1000;
+}
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: 1px solid var(--amz-border);
+  background: var(--amz-card);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+.nav-btn:hover { background: var(--amz-mid); border-color: var(--amz-orange); }
+.nav-btn.primary { background: var(--amz-orange); color: var(--amz-dark); border-color: var(--amz-orange); }
+.nav-btn.primary:hover { background: #e68900; }
+#slide-counter {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+  min-width: 80px;
+  text-align: center;
+}
+#progress-bar {
+  position: fixed;
+  bottom: 56px; left: 0;
+  height: 3px;
+  background: var(--amz-orange);
+  transition: width .4s ease;
+  z-index: 999;
+}
+
+/* ─── UTILS ─── */
+.slide-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1;
+  letter-spacing: 2px;
+}
+.slide-sub {
+  font-size: 15px;
+  color: var(--muted);
+  font-weight: 400;
+  line-height: 1.6;
+}
+.orange { color: var(--amz-orange); }
+.green { color: var(--green); }
+.red { color: var(--red); }
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+.badge-orange { background: rgba(255,153,0,0.15); color: var(--amz-orange); border: 1px solid rgba(255,153,0,0.3); }
+.badge-green  { background: rgba(46,204,113,0.15); color: var(--green); border: 1px solid rgba(46,204,113,0.3); }
+.badge-blue   { background: rgba(52,152,219,0.15); color: var(--blue); border: 1px solid rgba(52,152,219,0.3); }
+.badge-red    { background: rgba(231,76,60,0.15); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
+
+.card {
+  background: var(--amz-card);
+  border: 1px solid var(--amz-border);
+  border-radius: 16px;
+  padding: 24px;
+}
+.card-sm { padding: 16px 20px; border-radius: 12px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; width: 100%; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; width: 100%; }
+
+.kpi-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  color: var(--amz-orange);
+  line-height: 1;
+}
+.kpi-label { font-size: 12px; color: var(--muted); font-weight: 600; margin-top: 4px; }
+
+/* bar chart */
+.bar-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+.bar-label { font-size:11px; color:var(--muted); width:110px; text-align:right; flex-shrink:0; }
+.bar-track { flex:1; height:28px; background:rgba(255,255,255,0.05); border-radius:6px; overflow:hidden; position:relative; }
+.bar-fill { height:100%; border-radius:6px; display:flex; align-items:center; padding-left:10px; font-size:12px; font-weight:700; transition: width 1s ease; }
+.bar-val { font-size:12px; color:var(--muted); width:70px; flex-shrink:0; }
+
+/* table */
+.tbl { width:100%; border-collapse:collapse; font-size:12px; }
+.tbl th { padding:10px 14px; text-align:left; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--amz-border); }
+.tbl td { padding:10px 14px; border-bottom:1px solid rgba(255,255,255,0.04); }
+.tbl tr:last-child td { border-bottom:none; }
+.tbl tr:hover td { background:rgba(255,153,0,0.04); }
+
+/* donut */
+.donut-wrap { position:relative; width:140px; height:140px; flex-shrink:0; }
+.donut-wrap svg { transform:rotate(-90deg); }
+.donut-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; }
+
+/* animations */
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+@keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+.anim-1 { animation: fadeUp .5s ease .1s both; }
+.anim-2 { animation: fadeUp .5s ease .2s both; }
+.anim-3 { animation: fadeUp .5s ease .3s both; }
+.anim-4 { animation: fadeUp .5s ease .4s both; }
+.anim-5 { animation: fadeUp .5s ease .5s both; }
+.anim-6 { animation: fadeUp .5s ease .6s both; }
+
+/* ──────────────────────────────────────────
+   SLIDE-SPECIFIC
+────────────────────────────────────────── */
+
+/* SLIDE 1 — CAPA */
+#s1 {
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,153,0,0.12) 0%, transparent 70%), var(--amz-dark);
+  text-align: center;
+  gap: 24px;
+}
+#s1 .big-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 8vw, 110px);
+  line-height: .95;
+  letter-spacing: 4px;
+}
+#s1 .big-title span { color: var(--amz-orange); }
+#s1 .grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,153,0,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,153,0,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* SLIDE 2 — POR QUE AMAZON */
+#s2 { gap:24px; }
+.why-icon { font-size:32px; margin-bottom:8px; }
+.why-card .why-title { font-size:15px; font-weight:700; margin-bottom:6px; }
+.why-card .why-body { font-size:12px; color:var(--muted); line-height:1.6; }
+
+/* SLIDE 3 — PLANOS */
+#s3 { gap:24px; }
+.plan-card { border-radius:16px; padding:28px; text-align:center; position:relative; overflow:hidden; }
+.plan-card.ind { background:var(--amz-card); border:1px solid var(--amz-border); }
+.plan-card.pro { background:linear-gradient(135deg,#1a2f1a,#0d1f0d); border:2px solid var(--green); }
+.plan-price { font-family:'Bebas Neue',sans-serif; font-size:52px; line-height:1; }
+.plan-feat { font-size:12px; color:var(--muted); padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; align-items:center; gap:8px; }
+.plan-feat:last-child { border-bottom:none; }
+.check { color:var(--green); font-size:14px; }
+.dash { color:var(--muted); font-size:14px; }
+.pro-badge { position:absolute; top:16px; right:16px; }
+
+/* SLIDE 4 — COMISSÕES */
+#s4 { gap:20px; }
+.com-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; width:100%; }
+.com-card { background:var(--amz-card); border:1px solid var(--amz-border); border-radius:12px; padding:14px; display:flex; justify-content:space-between; align-items:center; }
+.com-name { font-size:12px; font-weight:600; }
+.com-pct { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--amz-orange); }
+.com-note { font-size:10px; color:var(--muted); }
+
+/* SLIDE 5 — LOGÍSTICA */
+#s5 { gap:20px; }
+.log-card { border-radius:16px; padding:22px; }
+.log-card.fba { background:linear-gradient(135deg,#0d1b2a,#1a3050); border:2px solid var(--blue); }
+.log-card.dba { background:linear-gradient(135deg,#0d2a1a,#1a4030); border:2px solid var(--green); }
+.log-card.own { background:var(--amz-card); border:1px solid var(--amz-border); }
+.log-title { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:1px; margin-bottom:4px; }
+.log-sub { font-size:11px; color:var(--muted); margin-bottom:14px; }
+.log-pill { display:inline-block; padding:3px 10px; border-radius:20px; font-size:10px; font-weight:700; margin-bottom:10px; }
+.log-feature { font-size:11px; color:var(--muted); padding:4px 0; display:flex; gap:6px; align-items:flex-start; line-height:1.4; }
+.log-price { font-family:'Bebas Neue',sans-serif; font-size:22px; margin-top:10px; }
+
+/* SLIDE 6 — TABELA FBA */
+#s6 { gap:16px; }
+
+/* SLIDE 7 — TABELA DBA */
+#s7 { gap:16px; }
+
+/* SLIDE 8 — PORTFÓLIO */
+#s8 { gap:20px; }
+.port-kpi { text-align:center; padding:20px; }
+.port-kpi .val { font-family:'Bebas Neue',sans-serif; font-size:52px; line-height:1; }
+.port-kpi .lbl { font-size:11px; color:var(--muted); font-weight:600; margin-top:4px; }
+
+/* SLIDE 9 — ESTRATÉGIA PREÇOS */
+#s9 { gap:20px; }
+.formula-box { background:rgba(255,153,0,0.08); border:1px solid rgba(255,153,0,0.3); border-radius:12px; padding:16px 22px; font-size:13px; text-align:center; }
+.formula-box .formula { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px; color:var(--amz-orange); }
+
+/* SLIDE 10 — ADS PRODUTOS */
+#s10 { gap:16px; }
+.ads-card { background:var(--amz-card); border:1px solid var(--amz-border); border-radius:12px; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; transition:.2s; }
+.ads-card:hover { border-color:var(--amz-orange); transform:translateX(4px); }
+.ads-num { font-family:'Bebas Neue',sans-serif; font-size:28px; color:rgba(255,153,0,0.3); margin-right:12px; flex-shrink:0; }
+.ads-name { font-size:12px; font-weight:600; line-height:1.4; }
+.ads-meta { font-size:11px; color:var(--muted); margin-top:2px; }
+.ads-margin { font-family:'Bebas Neue',sans-serif; font-size:26px; flex-shrink:0; }
+.ads-modal { font-size:10px; font-weight:700; text-align:right; margin-top:2px; }
+
+/* SLIDE 11 — OPORTUNIDADES */
+#s11 { gap:20px; }
+.opp-bar { height:8px; border-radius:4px; background:rgba(255,255,255,0.06); overflow:hidden; margin-top:6px; }
+.opp-bar-fill { height:100%; border-radius:4px; }
+
+/* SLIDE 12 — ALERTAS */
+#s12 { gap:20px; }
+.alert-card { border-radius:12px; padding:16px 20px; display:flex; gap:14px; align-items:flex-start; }
+.alert-icon { font-size:28px; flex-shrink:0; }
+.alert-title { font-size:14px; font-weight:700; margin-bottom:4px; }
+.alert-body { font-size:12px; color:var(--muted); line-height:1.5; }
+
+/* SLIDE 13 — ROAD MAP */
+#s13 { gap:24px; }
+.phase { display:flex; gap:20px; align-items:flex-start; }
+.phase-num { font-family:'Bebas Neue',sans-serif; font-size:48px; color:rgba(255,153,0,0.2); line-height:1; flex-shrink:0; width:50px; }
+.phase-content { flex:1; }
+.phase-name { font-size:15px; font-weight:700; margin-bottom:4px; }
+.phase-items { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.phase-tag { font-size:11px; padding:3px 10px; border-radius:20px; background:rgba(255,153,0,0.1); color:var(--amz-orange); border:1px solid rgba(255,153,0,0.2); }
+.phase-line { width:2px; background:linear-gradient(var(--amz-orange),transparent); height:30px; margin-left:24px; opacity:.3; }
+
+/* SLIDE 14 — FINAL */
+#s14 {
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,153,0,0.10) 0%, transparent 70%), var(--amz-dark);
+  text-align:center;
+  gap:24px;
+}
+#s14 .big-num { font-family:'Bebas Neue',sans-serif; font-size:100px; line-height:1; color:var(--amz-orange); }
+#s14 .stat-row { display:flex; gap:40px; justify-content:center; }
+#s14 .stat { text-align:center; }
+#s14 .stat-v { font-family:'Bebas Neue',sans-serif; font-size:36px; color:var(--text); }
+#s14 .stat-l { font-size:11px; color:var(--muted); font-weight:600; }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo">⬛ AMAZON BR</div>
+  <div class="nav-pills">
+    <button class="nav-pill active" onclick="goTo(0)">Capa</button>
+    <button class="nav-pill" onclick="goTo(1)">Por quê</button>
+    <button class="nav-pill" onclick="goTo(2)">Planos</button>
+    <button class="nav-pill" onclick="goTo(3)">Comissões</button>
+    <button class="nav-pill" onclick="goTo(4)">Logística</button>
+    <button class="nav-pill" onclick="goTo(5)">FBA</button>
+    <button class="nav-pill" onclick="goTo(6)">DBA</button>
+    <button class="nav-pill" onclick="goTo(7)">Portfólio</button>
+    <button class="nav-pill" onclick="goTo(8)">Precificação</button>
+    <button class="nav-pill" onclick="goTo(9)">ADS</button>
+    <button class="nav-pill" onclick="goTo(10)">Oportunidades</button>
+    <button class="nav-pill" onclick="goTo(11)">Alertas</button>
+    <button class="nav-pill" onclick="goTo(12)">Roadmap</button>
+    <button class="nav-pill" onclick="goTo(13)">Conclusão</button>
+  </div>
+  <div class="progress-info" id="prog-info">1 / 14</div>
+</nav>
+
+<div id="progress-bar"></div>
+<div id="slides">
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 1 — CAPA
+══════════════════════════════════════════════ -->
+<section class="slide active" id="s1">
+  <div class="grid-lines"></div>
+  <div class="anim-1">
+    <span class="badge badge-orange" style="font-size:12px; padding:6px 16px;">ESTRATÉGIA 2025</span>
+  </div>
+  <div class="big-title anim-2">
+    ABRINDO UM<br><span>MARKETPLACE</span><br>NA AMAZON BRASIL
+  </div>
+  <p class="slide-sub anim-3" style="max-width:560px;">
+    Análise completa de taxas, comissões, modalidades logísticas<br>
+    e estratégia de preços baseada em <strong style="color:var(--text)">9.291 SKUs reais</strong>
+  </p>
+  <div class="grid-4 anim-4" style="max-width:700px; margin-top:16px;">
+    <div class="card card-sm" style="text-align:center;">
+      <div class="kpi-val" style="font-size:32px;">9.291</div>
+      <div class="kpi-label">SKUs analisados</div>
+    </div>
+    <div class="card card-sm" style="text-align:center;">
+      <div class="kpi-val" style="font-size:32px;">10–15%</div>
+      <div class="kpi-label">Comissão Amazon</div>
+    </div>
+    <div class="card card-sm" style="text-align:center;">
+      <div class="kpi-val" style="font-size:32px;">29%</div>
+      <div class="kpi-label">Margem média</div>
+    </div>
+    <div class="card card-sm" style="text-align:center;">
+      <div class="kpi-val" style="font-size:32px;">4.693</div>
+      <div class="kpi-label">SKUs com &gt;30% margem</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 2 — POR QUE AMAZON
+══════════════════════════════════════════════ -->
+<section class="slide" id="s2">
+  <div style="width:100%;max-width:1000px;">
+    <div class="anim-1" style="margin-bottom:28px;">
+      <span class="badge badge-orange">Contexto</span>
+      <div class="slide-title" style="margin-top:8px;">POR QUE A <span class="orange">AMAZON BRASIL?</span></div>
+    </div>
+    <div class="grid-3 anim-2">
+      <div class="card why-card">
+        <div class="why-icon">🛒</div>
+        <div class="why-title">Maior marketplace do Brasil</div>
+        <div class="why-body">A Amazon é a 2ª maior plataforma de e-commerce do Brasil, com crescimento acelerado e confiança consolidada do consumidor.</div>
+      </div>
+      <div class="card why-card">
+        <div class="why-icon">👑</div>
+        <div class="why-title">Prime — 30M+ assinantes</div>
+        <div class="why-body">Produtos com badge Prime têm até 3x mais conversão. Clientes Prime gastam em média 2x mais do que não-Prime.</div>
+      </div>
+      <div class="card why-card">
+        <div class="why-icon">📦</div>
+        <div class="why-title">Logística terceirizada (FBA)</div>
+        <div class="why-body">A Amazon cuida de armazenagem, envio, devoluções e SAC. Você foca em vender, eles entregam com excelência.</div>
+      </div>
+    </div>
+    <div class="grid-3 anim-3" style="margin-top:16px;">
+      <div class="card why-card">
+        <div class="why-icon">🌎</div>
+        <div class="why-title">Alcance nacional imediato</div>
+        <div class="why-body">Acesso a milhões de compradores ativos em todo o Brasil desde o primeiro produto cadastrado, sem investir em marketing próprio.</div>
+      </div>
+      <div class="card why-card">
+        <div class="why-icon">💳</div>
+        <div class="why-title">Receba à vista no parcelado</div>
+        <div class="why-body">Mesmo que o cliente parcele, você recebe à vista. A Amazon assume o risco de crédito, melhorando seu fluxo de caixa.</div>
+      </div>
+      <div class="card why-card">
+        <div class="why-icon">📈</div>
+        <div class="why-title">ADS — Tráfego pago próprio</div>
+        <div class="why-body">Sistema de anúncios Sponsored Products com CPC médio acessível. ROI alto para produtos com boa avaliação e preço competitivo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 3 — PLANOS
+══════════════════════════════════════════════ -->
+<section class="slide" id="s3">
+  <div style="width:100%;max-width:900px;">
+    <div class="anim-1" style="margin-bottom:28px;">
+      <span class="badge badge-orange">Custos base</span>
+      <div class="slide-title" style="margin-top:8px;">PLANOS DE <span class="orange">VENDA</span></div>
+    </div>
+    <div class="grid-2 anim-2">
+      <div class="plan-card ind">
+        <div class="kpi-label" style="margin-bottom:8px;">PLANO INDIVIDUAL</div>
+        <div class="plan-price">R$ 2,00</div>
+        <div style="font-size:13px; color:var(--muted); margin-bottom:20px;">por item vendido + comissão</div>
+        <div class="plan-feat"><span class="check">✓</span> Sem mensalidade fixa</div>
+        <div class="plan-feat"><span class="check">✓</span> Suporte ao vendedor</div>
+        <div class="plan-feat"><span class="check">✓</span> Treinamentos gratuitos</div>
+        <div class="plan-feat"><span class="check">✓</span> Recebe à vista no parcelado</div>
+        <div class="plan-feat"><span class="dash">–</span> Sem publicidade (ADS)</div>
+        <div class="plan-feat"><span class="dash">–</span> Sem destaque nas buscas</div>
+        <div class="plan-feat"><span class="dash">–</span> Sem acesso ao FBA</div>
+        <div style="margin-top:16px;">
+          <span class="badge badge-orange">Ideal para testar o canal</span>
+        </div>
+      </div>
+      <div class="plan-card pro">
+        <span class="pro-badge badge badge-green">RECOMENDADO</span>
+        <div class="kpi-label" style="margin-bottom:8px; color:var(--green);">PLANO PROFISSIONAL</div>
+        <div class="plan-price" style="color:var(--green);">GRÁTIS</div>
+        <div style="font-size:13px; color:var(--muted); margin-bottom:4px;">1º ano grátis → R$ 19/mês a partir do 13º mês</div>
+        <div style="font-size:12px; color:var(--muted); margin-bottom:16px;">+ comissão por venda</div>
+        <div class="plan-feat"><span class="check">✓</span> Tudo do Individual</div>
+        <div class="plan-feat"><span class="check">✓</span> <strong>FBA — Logística da Amazon</strong></div>
+        <div class="plan-feat"><span class="check">✓</span> <strong>Publicidade Amazon ADS</strong></div>
+        <div class="plan-feat"><span class="check">✓</span> Oferta em destaque (Buy Box)</div>
+        <div class="plan-feat"><span class="check">✓</span> Cadastro em massa (planilha)</div>
+        <div class="plan-feat"><span class="check">✓</span> Múltiplos usuários na conta</div>
+        <div class="plan-feat"><span class="check">✓</span> Integração com ERPs (Bling)</div>
+        <div style="margin-top:16px;">
+          <span class="badge badge-green">Escala, ADS e FBA disponíveis</span>
+        </div>
+      </div>
+    </div>
+    <div class="card anim-3" style="margin-top:16px; padding:14px 20px; display:flex; align-items:center; gap:16px; background:rgba(255,153,0,0.06); border-color:rgba(255,153,0,0.3);">
+      <span style="font-size:24px;">💡</span>
+      <div>
+        <strong>Parcelamento sem juros (+1,5%):</strong>
+        <span style="font-size:13px; color:var(--muted);"> Programa automático ativado em até 30 dias — aumenta conversão e visibilidade nos resultados de busca. Pode ativar/desativar por produto.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 4 — COMISSÕES
+══════════════════════════════════════════════ -->
+<section class="slide" id="s4">
+  <div style="width:100%;max-width:1000px;">
+    <div class="anim-1" style="margin-bottom:24px;">
+      <span class="badge badge-orange">Atualização 20/01/2025</span>
+      <div class="slide-title" style="margin-top:8px;">COMISSÕES POR <span class="orange">CATEGORIA</span></div>
+      <p class="slide-sub">Calculadas sobre o preço total de venda. Mínimo: R$ 1,00 por item.</p>
+    </div>
+    <div class="com-grid anim-2">
+      <div class="com-card"><div><div class="com-name">Comidas e Bebidas</div><div class="com-note">Mín. R$1,00</div></div><div class="com-pct">10%</div></div>
+      <div class="com-card"><div><div class="com-name">TV, Áudio e Cinema</div><div class="com-note">Mín. R$1,00</div></div><div class="com-pct">10%</div></div>
+      <div class="com-card"><div><div class="com-name">Pneus e Rodas</div><div class="com-note">Mín. R$1,00</div></div><div class="com-pct">10%</div></div>
+      <div class="com-card"><div><div class="com-name">Eletrodomésticos</div><div class="com-note">Linha branca / Ar-cond.</div></div><div class="com-pct">11%</div></div>
+      <div class="com-card"><div><div class="com-name">Celulares</div></div><div class="com-pct">11%</div></div>
+      <div class="com-card"><div><div class="com-name">Câmera e Fotografia</div></div><div class="com-pct">11%</div></div>
+      <div class="com-card"><div><div class="com-name">Videogames</div></div><div class="com-pct">11%</div></div>
+      <div class="com-card"><div><div class="com-name">Ferramentas</div></div><div class="com-pct">11%</div></div>
+      <div class="com-card"><div><div class="com-name">Bebidas Alcoólicas</div></div><div class="com-pct">11%</div></div>
+      <div class="com-card"><div><div class="com-name">Automotivo / Moto</div></div><div class="com-pct">12%</div></div>
+      <div class="com-card"><div><div class="com-name">Casa / Decoração</div></div><div class="com-pct">12%</div></div>
+      <div class="com-card"><div><div class="com-name">Brinquedos</div></div><div class="com-pct">12%</div></div>
+      <div class="com-card"><div><div class="com-name">Esportes / Lazer</div></div><div class="com-pct">12%</div></div>
+      <div class="com-card"><div><div class="com-name">PC / Informática</div></div><div class="com-pct">12%</div></div>
+      <div class="com-card"><div><div class="com-name">Beleza / Saúde</div></div><div class="com-pct">13%</div></div>
+      <div class="com-card"><div><div class="com-name">Papelaria / Arte</div></div><div class="com-pct">13%</div></div>
+      <div class="com-card"><div><div class="com-name">Relógios</div></div><div class="com-pct">13%</div></div>
+      <div class="com-card" style="border-color:rgba(255,153,0,0.4);"><div><div class="com-name">Roupas / Calçados</div></div><div class="com-pct">14%</div></div>
+      <div class="com-card" style="border-color:rgba(255,153,0,0.4);"><div><div class="com-name">Joias</div></div><div class="com-pct">14%</div></div>
+      <div class="com-card" style="border-color:rgba(231,76,60,0.4);"><div><div class="com-name">Livros / Música</div></div><div class="com-pct" style="color:var(--red);">15%</div></div>
+      <div class="com-card" style="border-color:rgba(231,76,60,0.4);"><div><div class="com-name">Móveis</div><div class="com-note">15% até R$200 / 10% acima</div></div><div class="com-pct" style="color:var(--red);">15%</div></div>
+      <div class="com-card" style="border-color:rgba(231,76,60,0.4);"><div><div class="com-name">Demais categorias</div></div><div class="com-pct" style="color:var(--red);">15%</div></div>
+    </div>
+    <div class="card anim-3" style="margin-top:14px; padding:12px 20px; background:rgba(255,153,0,0.06); border-color:rgba(255,153,0,0.3);">
+      <span style="font-size:12px;"><strong class="orange">Acessórios Eletrônicos:</strong> 15% até R$100 + 10% no excedente acima de R$100 &nbsp;|&nbsp; <strong class="orange">Parcelamento sem juros:</strong> +1,5% opcional</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 5 — LOGÍSTICA OVERVIEW
+══════════════════════════════════════════════ -->
+<section class="slide" id="s5">
+  <div style="width:100%;max-width:1000px;">
+    <div class="anim-1" style="margin-bottom:24px;">
+      <span class="badge badge-orange">Modalidades</span>
+      <div class="slide-title" style="margin-top:8px;">OPÇÕES DE <span class="orange">ENVIO</span></div>
+    </div>
+    <div class="grid-3 anim-2">
+      <div class="log-card fba">
+        <span class="log-pill" style="background:rgba(52,152,219,0.2);color:var(--blue);border:1px solid rgba(52,152,219,0.3);">FBA — FULFILLMENT BY AMAZON</span>
+        <div class="log-title" style="color:var(--blue);">AMAZON<br>ENTREGA</div>
+        <div class="log-sub">Você envia pro CD Amazon. Eles fazem tudo.</div>
+        <div class="log-feature"><span>📦</span> Armazenagem no CD Amazon</div>
+        <div class="log-feature"><span>🚀</span> Entrega Prime (1-2 dias)</div>
+        <div class="log-feature"><span>📞</span> SAC 100% pela Amazon</div>
+        <div class="log-feature"><span>↩️</span> Devoluções gerenciadas</div>
+        <div class="log-feature"><span>🔍</span> Maior visibilidade nas buscas</div>
+        <div class="log-price" style="color:var(--blue);">A partir de R$ 10,05/un</div>
+        <div style="font-size:10px; color:var(--muted);">(para produtos acima de R$79)</div>
+        <div style="margin-top:10px;"><span class="badge badge-blue">RECOMENDADO: 2.113 SKUs</span></div>
+      </div>
+      <div class="log-card dba">
+        <span class="log-pill" style="background:rgba(46,204,113,0.2);color:var(--green);border:1px solid rgba(46,204,113,0.3);">DBA — DELIVERY BY AMAZON</span>
+        <div class="log-title" style="color:var(--green);">VOCÊ EMBALA<br>AMAZON ENTREGA</div>
+        <div class="log-sub">Você gerencia o estoque e embala. Amazon coleta e entrega.</div>
+        <div class="log-feature"><span>🏠</span> Estoque no seu galpão</div>
+        <div class="log-feature"><span>📬</span> Amazon coleta ou ponto de envio</div>
+        <div class="log-feature"><span>💰</span> Tarifa fixa e previsível</div>
+        <div class="log-feature"><span>✅</span> Frete grátis ao cliente &gt;R$19</div>
+        <div class="log-feature"><span>🎯</span> Ideal para produtos leves</div>
+        <div class="log-price" style="color:var(--green);">R$ 4,50 / 6,50 / 6,75/un</div>
+        <div style="font-size:10px; color:var(--muted);">(faixas: &lt;R$30 / R$30-49 / R$50-79)</div>
+        <div style="margin-top:10px;"><span class="badge badge-green">RECOMENDADO: 6.767 SKUs</span></div>
+      </div>
+      <div class="log-card own">
+        <span class="log-pill" style="background:rgba(255,153,0,0.1);color:var(--amz-orange);border:1px solid rgba(255,153,0,0.2);">LOGÍSTICA PRÓPRIA (MFN)</span>
+        <div class="log-title" style="color:var(--amz-orange);">VOCÊ GERENCIA<br>TUDO</div>
+        <div class="log-sub">Você estoca, embala e envia com sua transportadora.</div>
+        <div class="log-feature"><span>🏭</span> Controle total do processo</div>
+        <div class="log-feature"><span>💲</span> Sem tarifa Amazon</div>
+        <div class="log-feature"><span>⚙️</span> Você define frete e prazo</div>
+        <div class="log-feature"><span>⚠️</span> Sem badge Prime</div>
+        <div class="log-feature"><span>⚠️</span> Menor visibilidade na busca</div>
+        <div class="log-price" style="color:var(--amz-orange);">Custo variável</div>
+        <div style="font-size:10px; color:var(--muted);">(depende da sua transportadora)</div>
+        <div style="margin-top:10px;"><span class="badge badge-orange">RECOMENDADO: 150 SKUs (&lt;R$19)</span></div>
+      </div>
+    </div>
+    <div class="card anim-3" style="margin-top:14px; padding:12px 20px; background:rgba(46,204,113,0.05); border-color:rgba(46,204,113,0.3);">
+      <span style="font-size:12px;">🎁 <strong class="green">Experimente FBA GRÁTIS por 30 dias</strong> — sem tarifas de logística, armazenagem e coleta. &nbsp;|&nbsp; 🎯 <strong class="orange">Campanha SP:</strong> até 5 meses de comissão ZERO usando logísticas Amazon.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 6 — TABELA FBA
+══════════════════════════════════════════════ -->
+<section class="slide" id="s6">
+  <div style="width:100%;max-width:1000px;">
+    <div class="anim-1" style="margin-bottom:20px;">
+      <span class="badge badge-blue">Tarifas atualizadas 01/08/2025</span>
+      <div class="slide-title" style="margin-top:8px;">TARIFA <span style="color:var(--blue);">FBA</span> — POR PESO E PREÇO</div>
+      <p class="slide-sub">Tarifa por unidade (R$) — peso real ou dimensional (o maior). Embalagem: +20g.</p>
+    </div>
+    <div class="card anim-2" style="overflow:auto;">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Peso</th>
+            <th style="color:var(--blue);">R$79–99</th>
+            <th style="color:var(--blue);">R$100–119</th>
+            <th style="color:var(--blue);">R$120–149</th>
+            <th style="color:var(--blue);">R$150–199</th>
+            <th style="color:var(--blue);">&gt;R$200</th>
+            <th>Notas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>até 100g</td><td>R$ 10,05</td><td>R$ 12,05</td><td>R$ 14,05</td><td>R$ 15,05</td><td>R$ 15,55</td><td style="color:var(--muted);">Produtos pequenos</td></tr>
+          <tr><td>100–500g</td><td>~R$ 11–12</td><td>~R$ 13–14</td><td>~R$ 15–16</td><td>~R$ 16–17</td><td>~R$ 17–18</td><td style="color:var(--muted);">Faixa mais comum</td></tr>
+          <tr><td>500g–1kg</td><td>R$ 12,05</td><td>R$ 14,05</td><td>R$ 16,05</td><td>R$ 18,45</td><td>R$ 18,55</td><td style="color:var(--muted);">Ex: whey protein</td></tr>
+          <tr><td>1–1,5kg</td><td>R$ 12,95</td><td>R$ 14,95</td><td>R$ 16,95</td><td>R$ 19,45</td><td>R$ 20,35</td><td style="color:var(--muted);">Kits suplementos</td></tr>
+          <tr><td>1,5–2kg</td><td>R$ 13,05</td><td>R$ 15,05</td><td>R$ 17,05</td><td>R$ 19,95</td><td>R$ 21,35</td><td style="color:var(--muted);">—</td></tr>
+          <tr><td>2–3kg</td><td>R$ 14,05</td><td>R$ 16,05</td><td>R$ 18,05</td><td>R$ 20,05</td><td>R$ 22,35</td><td style="color:var(--muted);">Kits automotivos</td></tr>
+          <tr><td>3–5kg</td><td>~R$ 15–16</td><td>~R$ 17–18</td><td>~R$ 19–20</td><td>~R$ 22–23</td><td>~R$ 23–24</td><td style="color:var(--muted);">Quadros/painéis</td></tr>
+          <tr><td>5–10kg</td><td>~R$ 24–35</td><td>~R$ 27–40</td><td>~R$ 29–46</td><td>~R$ 30–51</td><td>~R$ 30–51</td><td style="color:var(--yellow);">⚠️ Atenção ao custo</td></tr>
+          <tr><td>+10kg</td><td colspan="5" style="text-align:center; color:var(--red);">R$ 51,35 + R$ 3,50/kg adicional</td><td style="color:var(--red);">Avaliar DBA</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid-3 anim-3" style="margin-top:14px;">
+      <div class="card card-sm" style="background:rgba(52,152,219,0.08); border-color:rgba(52,152,219,0.3);">
+        <div style="font-size:11px; font-weight:700; color:var(--blue); margin-bottom:4px;">📐 PESO DIMENSIONAL</div>
+        <div style="font-size:11px; color:var(--muted);">C × L × A (cm) ÷ 6000 = peso dim. (kg)<br>Usa-se o maior entre real e dimensional.</div>
+      </div>
+      <div class="card card-sm" style="background:rgba(46,204,113,0.08); border-color:rgba(46,204,113,0.3);">
+        <div style="font-size:11px; font-weight:700; color:var(--green); margin-bottom:4px;">📦 ARMAZENAGEM</div>
+        <div style="font-size:11px; color:var(--muted);">R$75/m³/mês (vol &lt;10.000cm³)<br>R$37,50/m³/mês (vol ≥10.000cm³)<br>Longo prazo (&gt;365 dias): R$525/m³</div>
+      </div>
+      <div class="card card-sm" style="background:rgba(255,153,0,0.08); border-color:rgba(255,153,0,0.3);">
+        <div style="font-size:11px; font-weight:700; color:var(--amz-orange); margin-bottom:4px;">🚛 COLETA (SP)</div>
+        <div style="font-size:11px; color:var(--muted);">Até 3kg: R$0,93–2,92/cx<br>3–6kg: R$1,10–3,84/cx<br>Serviço opcional por caixa</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 7 — TABELA DBA
+══════════════════════════════════════════════ -->
+<section class="slide" id="s7">
+  <div style="width:100%;max-width:960px;">
+    <div class="anim-1" style="margin-bottom:20px;">
+      <span class="badge badge-green">Tarifa fixa por unidade</span>
+      <div class="slide-title" style="margin-top:8px;">TARIFA <span style="color:var(--green);">DBA</span> — DELIVERY BY AMAZON</div>
+      <p class="slide-sub">Você embala, a Amazon coleta e entrega. Frete grátis ao cliente a partir de R$19.</p>
+    </div>
+    <div class="grid-3 anim-2" style="margin-bottom:20px;">
+      <div class="card" style="background:linear-gradient(135deg,#0d2a1a,#1a4030); border-color:var(--green); text-align:center; padding:28px;">
+        <div style="font-size:13px; color:var(--muted); margin-bottom:8px;">PRODUTO ABAIXO DE R$30</div>
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:56px; color:var(--green); line-height:1;">R$ 4,50</div>
+        <div style="font-size:12px; color:var(--muted);">por unidade vendida</div>
+        <div style="margin-top:12px; font-size:11px; color:var(--muted);">Frete grátis p/ mesma região</div>
+      </div>
+      <div class="card" style="background:linear-gradient(135deg,#0d2a1a,#1a4030); border-color:var(--green); text-align:center; padding:28px;">
+        <div style="font-size:13px; color:var(--muted); margin-bottom:8px;">PRODUTO R$30 A R$49,99</div>
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:56px; color:var(--green); line-height:1;">R$ 6,50</div>
+        <div style="font-size:12px; color:var(--muted);">por unidade vendida</div>
+        <div style="margin-top:12px; font-size:11px; color:var(--muted);">Frete grátis p/ mesma região</div>
+      </div>
+      <div class="card" style="background:linear-gradient(135deg,#0d2a1a,#1a4030); border-color:var(--green); text-align:center; padding:28px;">
+        <div style="font-size:13px; color:var(--muted); margin-bottom:8px;">PRODUTO R$50 A R$78,99</div>
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:56px; color:var(--green); line-height:1;">R$ 6,75</div>
+        <div style="font-size:12px; color:var(--muted);">por unidade vendida</div>
+        <div style="margin-top:12px; font-size:11px; color:var(--muted);">Frete grátis p/ mesma região</div>
+      </div>
+    </div>
+    <div class="card anim-3" style="margin-bottom:14px; overflow:auto;">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Faixa de Preço</th>
+            <th>Tarifa DBA</th>
+            <th>Comissão (ex: saúde 12%)</th>
+            <th>Total Amazon (ex. R$60)</th>
+            <th>Frete grátis ao cliente?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>&lt; R$30</td><td style="color:var(--green)">R$ 4,50</td><td style="color:var(--muted)">R$ 3,60</td><td style="color:var(--yellow)">R$ 8,10</td><td>✅ Mesma região</td></tr>
+          <tr><td>R$30–49,99</td><td style="color:var(--green)">R$ 6,50</td><td style="color:var(--muted)">R$ 4,20 (ex R$35)</td><td style="color:var(--yellow)">R$ 10,70</td><td>✅ Mesma região</td></tr>
+          <tr><td>R$50–78,99</td><td style="color:var(--green)">R$ 6,75</td><td style="color:var(--muted)">R$ 7,20 (ex R$60)</td><td style="color:var(--yellow)">R$ 13,95</td><td>✅ Mesma região</td></tr>
+          <tr><td>&gt; R$79</td><td style="color:var(--blue)">Varia (peso)</td><td style="color:var(--muted)">~R$ 9–20</td><td style="color:var(--blue)">Varia</td><td>✅ Nacional</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid-2 anim-4">
+      <div class="card card-sm" style="background:rgba(46,204,113,0.06); border-color:rgba(46,204,113,0.3);">
+        <strong style="font-size:12px; color:var(--green);">✅ Quando usar DBA</strong>
+        <div style="font-size:11px; color:var(--muted); margin-top:6px; line-height:1.6;">Produtos leves (&lt;2kg) com preço abaixo de R$79. Tarifa fixa e previsível. Ótimo para kits de menor valor, higiene, beleza, automotivo leve.</div>
+      </div>
+      <div class="card card-sm" style="background:rgba(231,76,60,0.06); border-color:rgba(231,76,60,0.3);">
+        <strong style="font-size:12px; color:var(--red);">⚠️ Atenção no DBA</strong>
+        <div style="font-size:11px; color:var(--muted); margin-top:6px; line-height:1.6;">Para produtos &gt;R$79 com peso acima de 3kg, o custo DBA pode superar o FBA. Sempre compare as duas opções antes de definir a modalidade.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 8 — PORTFÓLIO
+══════════════════════════════════════════════ -->
+<section class="slide" id="s8">
+  <div style="width:100%;max-width:1000px;">
+    <div class="anim-1" style="margin-bottom:24px;">
+      <span class="badge badge-orange">Análise Bling × Amazon</span>
+      <div class="slide-title" style="margin-top:8px;">NOSSO <span class="orange">PORTFÓLIO</span></div>
+      <p class="slide-sub">9.291 SKUs cruzados com as taxas oficiais Amazon 2025</p>
+    </div>
+    <div class="grid-4 anim-2" style="margin-bottom:20px;">
+      <div class="card port-kpi">
+        <div class="val" style="color:var(--amz-orange);">9.291</div>
+        <div class="lbl">Total de SKUs</div>
+      </div>
+      <div class="card port-kpi">
+        <div class="val" style="color:var(--green);">4.693</div>
+        <div class="lbl">Margem &gt; 30%</div>
+      </div>
+      <div class="card port-kpi">
+        <div class="val" style="color:var(--yellow);">1.944</div>
+        <div class="lbl">Margem 20–30%</div>
+      </div>
+      <div class="card port-kpi">
+        <div class="val" style="color:var(--red);">386</div>
+        <div class="lbl">Em prejuízo</div>
+      </div>
+    </div>
+    <div class="grid-2 anim-3">
+      <div class="card">
+        <div style="font-size:12px; font-weight:700; color:var(--muted); margin-bottom:16px; text-transform:uppercase; letter-spacing:.5px;">Distribuição de Margens</div>
+        <div class="bar-row"><div class="bar-label">&gt;40% Excelente</div><div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--green);color:var(--amz-dark);">1.977</div></div></div>
+        <div class="bar-row"><div class="bar-label">30–40% Ótimo</div><div class="bar-track"><div class="bar-fill" style="width:35%;background:#27AE60;color:var(--amz-dark);">2.682</div></div></div>
+        <div class="bar-row"><div class="bar-label">20–30% Bom</div><div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--yellow);color:var(--amz-dark);">1.944</div></div></div>
+        <div class="bar-row"><div class="bar-label">10–20% Regular</div><div class="bar-track"><div class="bar-fill" style="width:6%;background:#E67E22;color:var(--amz-dark);">460</div></div></div>
+        <div class="bar-row"><div class="bar-label">0–10% Atenção</div><div class="bar-track"><div class="bar-fill" style="width:2%;background:#E74C3C;color:#fff;">123</div></div></div>
+        <div class="bar-row"><div class="bar-label">Prejuízo</div><div class="bar-track"><div class="bar-fill" style="width:5%;background:#8B0000;color:#fff;">386</div></div></div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px; font-weight:700; color:var(--muted); margin-bottom:16px; text-transform:uppercase; letter-spacing:.5px;">Modalidade Logística Recomendada</div>
+        <div class="bar-row"><div class="bar-label">DBA</div><div class="bar-track"><div class="bar-fill" style="width:73%;background:var(--green);color:var(--amz-dark);">6.767</div></div><div class="bar-val">72,8%</div></div>
+        <div class="bar-row"><div class="bar-label">FBA</div><div class="bar-track"><div class="bar-fill" style="width:23%;background:var(--blue);color:#fff;">2.113</div></div><div class="bar-val">22,7%</div></div>
+        <div class="bar-row"><div class="bar-label">Logística Própria</div><div class="bar-track"><div class="bar-fill" style="width:2%;background:var(--amz-orange);color:var(--amz-dark);">150</div></div><div class="bar-val">1,6%</div></div>
+        <div class="bar-row"><div class="bar-label">Sem Preço</div><div class="bar-track"><div class="bar-fill" style="width:3%;background:#555;color:#fff;">261</div></div><div class="bar-val">2,8%</div></div>
+        <div style="margin-top:20px; font-size:12px; font-weight:700; color:var(--muted); margin-bottom:12px; text-transform:uppercase; letter-spacing:.5px;">Top Fornecedores por Margem</div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <span class="badge badge-green">Maximum Boxing 40%</span>
+          <span class="badge badge-green">FPL Comércio 41%</span>
+          <span class="badge badge-green">EVC Industrial 38%</span>
+          <span class="badge badge-green">Cambuci 37%</span>
+          <span class="badge badge-orange">Topway 36%</span>
+          <span class="badge badge-orange">Bravox 34%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 9 — ESTRATÉGIA DE PREÇOS
+══════════════════════════════════════════════ -->
+<section class="slide" id="s9">
+  <div style="width:100%;max-width:960px;">
+    <div class="anim-1" style="margin-bottom:24px;">
+      <span class="badge badge-orange">Método</span>
+      <div class="slide-title" style="margin-top:8px;">ESTRATÉGIA DE <span class="orange">PRECIFICAÇÃO</span></div>
+    </div>
+    <div class="anim-2 formula-box" style="margin-bottom:20px;">
+      <div style="font-size:12px; color:var(--muted); margin-bottom:8px;">FÓRMULA DE PREÇO MÍNIMO (META: 25% DE MARGEM)</div>
+      <div class="formula">PREÇO = (CUSTO + TARIFA LOGÍSTICA) ÷ (1 − COMISSÃO% − 25%)</div>
+    </div>
+    <div class="grid-2 anim-3" style="margin-bottom:16px;">
+      <div class="card">
+        <div style="font-size:12px; font-weight:700; color:var(--muted); margin-bottom:14px; text-transform:uppercase; letter-spacing:.5px;">Exemplo Real — Whey Protein 900g</div>
+        <table class="tbl">
+          <tr><td>Custo do produto</td><td style="text-align:right; color:var(--text);">R$ 83,92</td></tr>
+          <tr><td>Comissão Amazon (12%)</td><td style="text-align:right; color:var(--red);">– R$ 23,27</td></tr>
+          <tr><td>Tarifa FBA (1kg / R$193)</td><td style="text-align:right; color:var(--red);">– R$ 16,45</td></tr>
+          <tr><td>Lucro líquido</td><td style="text-align:right; color:var(--green); font-weight:700;">R$ 70,25</td></tr>
+          <tr><td><strong>Margem</strong></td><td style="text-align:right; color:var(--amz-orange); font-weight:700; font-size:16px;"><strong>36,2%</strong></td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div style="font-size:12px; font-weight:700; color:var(--muted); margin-bottom:14px; text-transform:uppercase; letter-spacing:.5px;">Exemplo Real — Kit Automotivo EVC</div>
+        <table class="tbl">
+          <tr><td>Custo do produto</td><td style="text-align:right; color:var(--text);">R$ 90,79</td></tr>
+          <tr><td>Comissão Amazon (12%)</td><td style="text-align:right; color:var(--red);">– R$ 23,39</td></tr>
+          <tr><td>Tarifa FBA (3,3kg / R$194)</td><td style="text-align:right; color:var(--red);">– R$ 15,05</td></tr>
+          <tr><td>Lucro líquido</td><td style="text-align:right; color:var(--green); font-weight:700;">R$ 65,66</td></tr>
+          <tr><td><strong>Margem</strong></td><td style="text-align:right; color:var(--amz-orange); font-weight:700; font-size:16px;"><strong>33,7%</strong></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="grid-3 anim-4">
+      <div class="card card-sm" style="background:rgba(46,204,113,0.06); border-color:rgba(46,204,113,0.3);">
+        <strong style="font-size:12px; color:var(--green);">🎯 Meta de Margem</strong>
+        <div style="font-size:11px; color:var(--muted); margin-top:6px;">Mínimo: 20% &nbsp;|&nbsp; Ideal: 25–35%<br>Com ADS ativo: adicionar 3–5% ao preço para absorver custo de publicidade.</div>
+      </div>
+      <div class="card card-sm" style="background:rgba(52,152,219,0.06); border-color:rgba(52,152,219,0.3);">
+        <strong style="font-size:12px; color:var(--blue);">📊 Faixas estratégicas</strong>
+        <div style="font-size:11px; color:var(--muted); margin-top:6px;">&lt;R$79 → DBA (tarifa fixa)<br>R$79–200 → FBA (Prime badge)<br>&gt;R$200 → FBA ou avaliar peso</div>
+      </div>
+      <div class="card card-sm" style="background:rgba(255,153,0,0.06); border-color:rgba(255,153,0,0.3);">
+        <strong style="font-size:12px; color:var(--amz-orange);">💡 Parcelamento</strong>
+        <div style="font-size:11px; color:var(--muted); margin-top:6px;">Adicionar +1,5% ao preço em produtos que serão parcelados. Aumenta conversão sem comprometer margem.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 10 — PRODUTOS ADS
+══════════════════════════════════════════════ -->
+<section class="slide" id="s10">
+  <div style="width:100%;max-width:1000px;">
+    <div class="anim-1" style="margin-bottom:20px;">
+      <span class="badge badge-orange">Sponsored Products</span>
+      <div class="slide-title" style="margin-top:8px;">10 PRODUTOS <span class="orange">SELECIONADOS PARA ADS</span></div>
+      <p class="slide-sub">Critérios: boa margem, peso favorável, categoria com demanda</p>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;" class="anim-2">
+      <div class="ads-card">
+        <div class="ads-num">01</div>
+        <div style="flex:1;">
+          <div class="ads-name">KIT 3x Colágeno Verisol Frutas Tropicais 150g</div>
+          <div class="ads-meta">Sanavita · Custo R$143,11 · Peso 0,7kg · FBA</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ads-margin" style="color:var(--green);">36%</div>
+          <div class="ads-modal" style="color:var(--blue);">FBA</div>
+        </div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-num">02</div>
+        <div style="flex:1;">
+          <div class="ads-name">KIT 3x Creatina Topway 300g 100% Pura</div>
+          <div class="ads-meta">Topway · Custo R$120,13 · Peso 1,54kg · FBA</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ads-margin" style="color:var(--green);">33%</div>
+          <div class="ads-modal" style="color:var(--blue);">FBA</div>
+        </div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-num">03</div>
+        <div style="flex:1;">
+          <div class="ads-name">Whey Protein 100% 900g Cookies</div>
+          <div class="ads-meta">Topway · Custo R$83,92 · Peso 0,99kg · FBA</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ads-margin" style="color:var(--green);">36%</div>
+          <div class="ads-modal" style="color:var(--blue);">FBA</div>
+        </div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-num">04</div>
+        <div style="flex:1;">
+          <div class="ads-name">KIT V-Mol + Renova Plásticos + Sanitizante + Acessórios</div>
+          <div class="ads-meta">EVC Industrial · Custo R$90,79 · Peso 3,3kg · FBA</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ads-margin" style="color:var(--green);">34%</div>
+          <div class="ads-modal" style="color:var(--blue);">FBA</div>
+        </div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-num">05</div>
+        <div style="flex:1;">
+          <div class="ads-name">KIT Arominha Gel Carro Novo + Spray Morango + Gel Vintex</div>
+          <div class="ads-meta">EVC Industrial · Custo R$24,15 · Peso 0,22kg · DBA</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ads-margin" style="color:var(--amz-orange);">48%</div>
+          <div class="ads-modal" style="color:var(--green);">DBA</div>
+        </div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-num">06</div>
+        <div style="flex:1;">
+          <div class="ads-name">Alto Falante Bravox B3X60X — Apolo/Fox/Gol/Jetta/Golf</div>
+          <div class="ads-meta">Bravox · Custo R$62,05 · Peso 0,96kg · FBA</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ads-margin" style="color:var(--yellow);">21%</div>
+          <div class="ads-modal" style="color:var(--blue);">FBA</div>
+        </div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-num">07</div>
+        <div style="flex:1;">
+          <div class="ads-name">KIT Whey Chocolate c/ Avelã 900g + Creatina Topway 300g</div>
+          <div class="ads-meta">Topway · Custo R$141,13 · Peso 1,3kg · FBA</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ads-margin" style="color:var(--green);">35%</div>
+          <div class="ads-modal" style="color:var(--blue);">FBA</div>
+        </div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-num">08</div>
+        <div style="flex:1;">
+          <div class="ads-name">KIT Whey Chocolate c/ Avelã 900g + Colágeno Skin Body 200g</div>
+          <div class="ads-meta">Topway · Custo R$134,63 · Peso 1,2kg · FBA</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ads-margin" style="color:var(--green);">35%</div>
+          <div class="ads-modal" style="color:var(--blue);">FBA</div>
+        </div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-num">09</div>
+        <div style="flex:1;">
+          <div class="ads-name">KIT Rejuvex 400g + Pneu Pretinho 500ml + Lava Autos 1,5L</div>
+          <div class="ads-meta">EVC Industrial · Custo R$66,95 · Peso 2,75kg · FBA</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ads-margin" style="color:var(--green);">40%</div>
+          <div class="ads-modal" style="color:var(--blue);">FBA</div>
+        </div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-num">10</div>
+        <div style="flex:1;">
+          <div class="ads-name">KIT Nuber 240ml + Dracco 240ml + Toalha + Pincel Retrátil</div>
+          <div class="ads-meta">EVC Industrial · Custo R$60,37 · Peso 0,55kg · FBA</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ads-margin" style="color:var(--green);">38%</div>
+          <div class="ads-modal" style="color:var(--blue);">FBA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 11 — OPORTUNIDADES
+══════════════════════════════════════════════ -->
+<section class="slide" id="s11">
+  <div style="width:100%;max-width:960px;">
+    <div class="anim-1" style="margin-bottom:24px;">
+      <span class="badge badge-green">Portfólio</span>
+      <div class="slide-title" style="margin-top:8px;">MAIORES <span class="orange">OPORTUNIDADES</span></div>
+      <p class="slide-sub">Fornecedores e categorias com melhor margem para priorizar no lançamento</p>
+    </div>
+    <div class="grid-2 anim-2">
+      <div class="card">
+        <div style="font-size:12px; font-weight:700; color:var(--muted); margin-bottom:16px; text-transform:uppercase; letter-spacing:.5px;">🏆 Top Fornecedores</div>
+        <div class="bar-row"><div class="bar-label">FPL Comércio</div><div class="bar-track"><div class="bar-fill" style="width:82%;background:var(--green);color:var(--amz-dark);">41% · 231 SKUs</div></div></div>
+        <div class="bar-row"><div class="bar-label">Maximum Boxing</div><div class="bar-track"><div class="bar-fill" style="width:80%;background:#27AE60;color:var(--amz-dark);">40% · 400 SKUs</div></div></div>
+        <div class="bar-row"><div class="bar-label">EVC Industrial</div><div class="bar-track"><div class="bar-fill" style="width:76%;background:#2ECC71;color:var(--amz-dark);">38% · 556 SKUs</div></div></div>
+        <div class="bar-row"><div class="bar-label">Topway</div><div class="bar-track"><div class="bar-fill" style="width:73%;background:var(--yellow);color:var(--amz-dark);">36% · 94 SKUs</div></div></div>
+        <div class="bar-row"><div class="bar-label">Cambuci</div><div class="bar-track"><div class="bar-fill" style="width:74%;background:var(--yellow);color:var(--amz-dark);">37% · 425 SKUs</div></div></div>
+        <div class="bar-row"><div class="bar-label">Bravox</div><div class="bar-track"><div class="bar-fill" style="width:70%;background:#F39C12;color:var(--amz-dark);">35% · 179 SKUs</div></div></div>
+        <div class="bar-row"><div class="bar-label">Sanavita</div><div class="bar-track"><div class="bar-fill" style="width:69%;background:#E67E22;color:var(--amz-dark);">34% · 143 SKUs</div></div></div>
+        <div class="bar-row"><div class="bar-label">Metalúrgica Mor</div><div class="bar-track"><div class="bar-fill" style="width:70%;background:#E67E22;color:var(--amz-dark);">35% · 85 SKUs</div></div></div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px; font-weight:700; color:var(--muted); margin-bottom:16px; text-transform:uppercase; letter-spacing:.5px;">📂 Top Categorias</div>
+        <div class="bar-row"><div class="bar-label" style="width:130px;">Quadros/Lousas</div><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--blue);color:#fff;">1.694 SKUs</div></div></div>
+        <div class="bar-row"><div class="bar-label" style="width:130px;">Guidão/Motos</div><div class="bar-track"><div class="bar-fill" style="width:40%;background:#2980B9;color:#fff;">381 SKUs</div></div></div>
+        <div class="bar-row"><div class="bar-label" style="width:130px;">Cabos de Áudio</div><div class="bar-track"><div class="bar-fill" style="width:13%;background:#1A6FA8;color:#fff;">125 SKUs</div></div></div>
+        <div class="bar-row"><div class="bar-label" style="width:130px;">Som Automotivo</div><div class="bar-track"><div class="bar-fill" style="width:12%;background:#154E80;color:#fff;">117 SKUs</div></div></div>
+        <div class="bar-row"><div class="bar-label" style="width:130px;">Alto-Falantes</div><div class="bar-track"><div class="bar-fill" style="width:10%;background:#0F3A60;color:#fff;">102 SKUs</div></div></div>
+        <div class="bar-row"><div class="bar-label" style="width:130px;">Relógios</div><div class="bar-track"><div class="bar-fill" style="width:8%;background:#8E44AD;color:#fff;">77 SKUs</div></div></div>
+        <div style="margin-top:16px; font-size:12px; font-weight:700; color:var(--muted); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px;">💰 Faixas de Preço</div>
+        <div class="bar-row"><div class="bar-label" style="width:130px;">R$80–R$149</div><div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--green);color:var(--amz-dark);">Melhor custo-benefício FBA</div></div></div>
+        <div class="bar-row"><div class="bar-label" style="width:130px;">R$150–R$299</div><div class="bar-track"><div class="bar-fill" style="width:30%;background:#27AE60;color:var(--amz-dark);">Ótima margem FBA</div></div></div>
+        <div class="bar-row"><div class="bar-label" style="width:130px;">R$30–R$79</div><div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--yellow);color:var(--amz-dark);">DBA ideal</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 12 — ALERTAS
+══════════════════════════════════════════════ -->
+<section class="slide" id="s12">
+  <div style="width:100%;max-width:960px;">
+    <div class="anim-1" style="margin-bottom:24px;">
+      <span class="badge badge-red">Pontos de atenção</span>
+      <div class="slide-title" style="margin-top:8px;">ALERTAS E <span class="orange">AÇÕES NECESSÁRIAS</span></div>
+    </div>
+    <div class="grid-2 anim-2">
+      <div class="alert-card" style="background:rgba(231,76,60,0.08); border:1px solid rgba(231,76,60,0.3); border-radius:12px;">
+        <div class="alert-icon">🔴</div>
+        <div>
+          <div class="alert-title" style="color:var(--red);">386 SKUs em prejuízo no preço atual</div>
+          <div class="alert-body">Esses produtos precisam de repricing antes de serem listados. Use a planilha gerada com o "Preço Recomendado 25%" para corrigir. Não liste sem ajustar.</div>
+        </div>
+      </div>
+      <div class="alert-card" style="background:rgba(231,76,60,0.08); border:1px solid rgba(231,76,60,0.3); border-radius:12px;">
+        <div class="alert-icon">⚠️</div>
+        <div>
+          <div class="alert-title" style="color:var(--red);">4.888 SKUs sem categoria Amazon</div>
+          <div class="alert-body">Sem categoria definida, a comissão padrão de 15% foi aplicada. Cadastrar a categoria correta pode reduzir a comissão em até 5 pontos percentuais.</div>
+        </div>
+      </div>
+      <div class="alert-card" style="background:rgba(243,156,18,0.08); border:1px solid rgba(243,156,18,0.3); border-radius:12px;">
+        <div class="alert-icon">📦</div>
+        <div>
+          <div class="alert-title" style="color:var(--yellow);">1.156 SKUs sem peso cadastrado no Bling</div>
+          <div class="alert-body">Sem o peso, é impossível calcular a tarifa FBA com precisão. Completar o cadastro de peso/dimensões no Bling é prioritário antes do envio ao CD Amazon.</div>
+        </div>
+      </div>
+      <div class="alert-card" style="background:rgba(243,156,18,0.08); border:1px solid rgba(243,156,18,0.3); border-radius:12px;">
+        <div class="alert-icon">💸</div>
+        <div>
+          <div class="alert-title" style="color:var(--yellow);">151 SKUs sem preço de venda definido</div>
+          <div class="alert-body">Produtos com custo cadastrado mas sem preço de venda. Usar a fórmula de precificação (meta 25%) para definir o preço correto antes de criar o anúncio.</div>
+        </div>
+      </div>
+      <div class="alert-card" style="background:rgba(52,152,219,0.08); border:1px solid rgba(52,152,219,0.3); border-radius:12px;">
+        <div class="alert-icon">📸</div>
+        <div>
+          <div class="alert-title" style="color:var(--blue);">Qualidade de imagens — crítico para conversão</div>
+          <div class="alert-body">Amazon exige imagens com fundo branco puro, mínimo 1000×1000px. Produtos sem fotos profissionais têm taxa de conversão até 60% menor. Priorizar os 10 produtos ADS.</div>
+        </div>
+      </div>
+      <div class="alert-card" style="background:rgba(52,152,219,0.08); border:1px solid rgba(52,152,219,0.3); border-radius:12px;">
+        <div class="alert-icon">⭐</div>
+        <div>
+          <div class="alert-title" style="color:var(--blue);">Avaliações — combustível para o ADS</div>
+          <div class="alert-body">Produtos sem avaliações têm custo por clique mais alto e menor conversão no ADS. Estratégia inicial: solicitar reviews de primeiras vendas via Vine ou Solicitar Avaliação.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 13 — ROADMAP
+══════════════════════════════════════════════ -->
+<section class="slide" id="s13">
+  <div style="width:100%;max-width:960px;">
+    <div class="anim-1" style="margin-bottom:28px;">
+      <span class="badge badge-orange">Plano de ação</span>
+      <div class="slide-title" style="margin-top:8px;">ROADMAP DE <span class="orange">LANÇAMENTO</span></div>
+    </div>
+    <div class="grid-2 anim-2">
+      <div>
+        <div class="phase">
+          <div class="phase-num">01</div>
+          <div class="phase-content">
+            <div class="badge badge-red" style="margin-bottom:8px;">MÊS 1 — PREPARAÇÃO</div>
+            <div class="phase-name">Estruturação e cadastro</div>
+            <div style="font-size:12px; color:var(--muted); line-height:1.6;">Abrir conta Plano Profissional · Configurar integração Bling → Amazon · Completar peso e dimensões de todos os SKUs · Corrigir preços dos 386 SKUs com prejuízo · Definir categorias nos 4.888 sem categoria</div>
+            <div class="phase-items">
+              <span class="phase-tag">Conta Amazon</span>
+              <span class="phase-tag">Integração Bling</span>
+              <span class="phase-tag">Repricing</span>
+              <span class="phase-tag">Categorização</span>
+            </div>
+          </div>
+        </div>
+        <div class="phase-line"></div>
+        <div class="phase" style="margin-top:16px;">
+          <div class="phase-num">02</div>
+          <div class="phase-content">
+            <div class="badge badge-yellow" style="margin-bottom:8px;">MÊS 2 — LANÇAMENTO DBA</div>
+            <div class="phase-name">Primeiras vendas com DBA</div>
+            <div style="font-size:12px; color:var(--muted); line-height:1.6;">Listar 6.767 SKUs recomendados para DBA · Testar logística e tempo de entrega · Coletar primeiras avaliações · Preparar fotos profissionais dos 10 produtos ADS · Monitorar performance por SKU</div>
+            <div class="phase-items">
+              <span class="phase-tag">6.767 SKUs DBA</span>
+              <span class="phase-tag">Fotos ADS</span>
+              <span class="phase-tag">Reviews</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="phase">
+          <div class="phase-num">03</div>
+          <div class="phase-content">
+            <div class="badge badge-blue" style="margin-bottom:8px;">MÊS 3 — ATIVAR FBA + ADS</div>
+            <div class="phase-name">Escala com Prime e Publicidade</div>
+            <div style="font-size:12px; color:var(--muted); line-height:1.6;">Enviar 2.113 SKUs FBA ao CD Amazon · Ativar os 10 produtos ADS com orçamento inicial de R$250 (crédito Amazon) · Configurar campanhas Sponsored Products · Monitorar ACoS (meta &lt; margem do produto)</div>
+            <div class="phase-items">
+              <span class="phase-tag">FBA 30 dias grátis</span>
+              <span class="phase-tag">10 produtos ADS</span>
+              <span class="phase-tag">R$250 crédito</span>
+            </div>
+          </div>
+        </div>
+        <div class="phase-line"></div>
+        <div class="phase" style="margin-top:16px;">
+          <div class="phase-num">04</div>
+          <div class="phase-content">
+            <div class="badge badge-green" style="margin-bottom:8px;">MÊS 4+ — CRESCIMENTO</div>
+            <div class="phase-name">Otimização e expansão</div>
+            <div style="font-size:12px; color:var(--muted); line-height:1.6;">Análise de dados por SKU · Pausar produtos sem giro FBA (evitar armazenagem longa) · Escalar ADS nos produtos com ACoS favorável · Avaliar Brand Registry · Expandir categorias de maior margem</div>
+            <div class="phase-items">
+              <span class="phase-tag">Análise por SKU</span>
+              <span class="phase-tag">Brand Registry</span>
+              <span class="phase-tag">ADS scale</span>
+              <span class="phase-tag">Revisão mensal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card anim-3" style="margin-top:16px; padding:14px 20px; background:rgba(255,153,0,0.06); border-color:rgba(255,153,0,0.3);">
+      <span style="font-size:12px;">🎯 <strong>Campanha especial SP:</strong> Vendedores com coleta em SP ganham até 5 meses de <strong>comissão ZERO</strong> usando FBA/DBA. Isso pode representar uma economia de R$ 20.000–60.000+ nos primeiros meses.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 14 — CONCLUSÃO
+══════════════════════════════════════════════ -->
+<section class="slide" id="s14">
+  <div class="grid-lines"></div>
+  <div class="anim-1"><span class="badge badge-green" style="font-size:12px; padding:6px 16px;">CONCLUSÃO</span></div>
+  <div class="anim-2">
+    <div style="font-family:'Bebas Neue',sans-serif; font-size:clamp(40px,6vw,80px); line-height:1; text-align:center;">
+      PRONTO PARA <span class="orange">VENDER</span><br>NA MAIOR VITRINE DO BRASIL
+    </div>
+  </div>
+  <div class="stat-row anim-3">
+    <div class="stat"><div class="stat-v">9.291</div><div class="stat-l">SKUs prontos</div></div>
+    <div class="stat"><div class="stat-v" style="color:var(--green);">4.693</div><div class="stat-l">SKUs &gt;30% margem</div></div>
+    <div class="stat"><div class="stat-v" style="color:var(--blue);">2.113</div><div class="stat-l">SKUs para FBA</div></div>
+    <div class="stat"><div class="stat-v" style="color:var(--amz-orange);">29%</div><div class="stat-l">Margem média</div></div>
+    <div class="stat"><div class="stat-v" style="color:var(--yellow);">10</div><div class="stat-l">Produtos ADS</div></div>
+  </div>
+  <div class="grid-3 anim-4" style="max-width:720px;">
+    <div class="card card-sm" style="text-align:center;">
+      <div style="font-size:28px; margin-bottom:8px;">🆓</div>
+      <div style="font-size:13px; font-weight:700;">1 ano grátis</div>
+      <div style="font-size:11px; color:var(--muted);">Plano Profissional</div>
+    </div>
+    <div class="card card-sm" style="text-align:center;">
+      <div style="font-size:28px; margin-bottom:8px;">📦</div>
+      <div style="font-size:13px; font-weight:700;">30 dias grátis FBA</div>
+      <div style="font-size:11px; color:var(--muted);">Sem tarifas de logística</div>
+    </div>
+    <div class="card card-sm" style="text-align:center;">
+      <div style="font-size:28px; margin-bottom:8px;">💰</div>
+      <div style="font-size:13px; font-weight:700;">R$250 em ADS</div>
+      <div style="font-size:11px; color:var(--muted);">Crédito gratuito Amazon</div>
+    </div>
+  </div>
+  <div class="anim-5" style="font-size:13px; color:var(--muted); text-align:center;">
+    Dados: Bling ERP × Amazon Brasil · Comissões 20/01/2025 · Tarifas FBA 01/08/2025
+  </div>
+</section>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottom">
+  <button class="nav-btn" onclick="prevSlide()">← Anterior</button>
+  <span id="slide-counter">1 / 14</span>
+  <button class="nav-btn primary" onclick="nextSlide()">Próximo →</button>
+</div>
+
+<script>
+const TOTAL = 14;
+let current = 0;
+let isAnimating = false;
+
+function goTo(idx) {
+  if (isAnimating || idx === current) return;
+  isAnimating = true;
+  const slides = document.querySelectorAll('.slide');
+  const pills  = document.querySelectorAll('.nav-pill');
+  slides[current].classList.add('exit-left');
+  slides[current].classList.remove('active');
+  current = idx;
+  slides[current].classList.add('active');
+  slides[current].classList.remove('exit-left');
+  pills.forEach((p,i) => p.classList.toggle('active', i === current));
+  document.getElementById('slide-counter').textContent = `${current+1} / ${TOTAL}`;
+  document.getElementById('prog-info').textContent = `${current+1} / ${TOTAL}`;
+  document.getElementById('progress-bar').style.width = `${((current+1)/TOTAL)*100}%`;
+  setTimeout(() => {
+    slides.forEach((s,i) => { if(i!==current) { s.classList.remove('exit-left'); } });
+    isAnimating = false;
+  }, 520);
+}
+
+function nextSlide() { if(current < TOTAL-1) goTo(current+1); }
+function prevSlide() { if(current > 0) goTo(current-1); }
+
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') nextSlide();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevSlide();
+});
+
+// Init
+document.getElementById('progress-bar').style.width = `${(1/TOTAL)*100}%`;
+</script>
+</body>
+</html>
